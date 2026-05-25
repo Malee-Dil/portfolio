@@ -4,14 +4,14 @@ import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
-import CustomCursor from "./components/Customcursor";
+import CustomCursor from "./components/CustomCursor";
 
 export default function Home() {
   return (
     <>
       <CustomCursor />
       <Navbar />
-<main className="pt-[72px]">
+      <main>
         <Hero />
         <About />
         <Skills />
