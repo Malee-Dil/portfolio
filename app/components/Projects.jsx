@@ -59,6 +59,50 @@ const PROJECTS = [
   },
 ];
 
+/* ─── responsive hook ─────────────────────────────── */
+function useBreakpoint() {
+  const [bp, setBp] = useState({ isMobile: false, isTablet: false });
+  useEffect(() => {
+    const check = () => {
+      const w = window.innerWidth;
+      setBp({ isMobile: w < 640, isTablet: w >= 640 && w < 1024 });
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return bp;
+}
+
+/* ─── LinkBtn ─────────────────────────────────────── */
+function LinkBtn({ href, title, children }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <a
+      href={href}
+      title={title}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        width: 32, height: 32,
+        borderRadius: 9,
+        border: `1px solid ${hov ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.08)"}`,
+        background: hov ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        color: hov ? "#f0f4ff" : "rgba(240,244,255,0.35)",
+        textDecoration: "none",
+        transition: "all .2s ease",
+        flexShrink: 0,
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
+/* ─── ProjectCard ─────────────────────────────────── */
 function ProjectCard({ project, index, visible }) {
   const [hovered, setHovered] = useState(false);
 
@@ -68,16 +112,16 @@ function ProjectCard({ project, index, visible }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         position: "relative",
-        borderRadius: 24,
+        borderRadius: 20,
         border: `1px solid ${hovered ? project.border : "rgba(255,255,255,0.06)"}`,
         background: hovered ? project.glow : "rgba(255,255,255,0.02)",
-        padding: "32px",
+        padding: "clamp(20px, 4vw, 32px)",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
         opacity: visible ? 1 : 0,
         transform: visible
-          ? hovered ? "translateY(-8px)" : "translateY(0)"
+          ? hovered ? "translateY(-6px)" : "translateY(0)"
           : "translateY(32px)",
         boxShadow: hovered
           ? `0 20px 60px ${project.glow}, 0 0 0 1px ${project.border}`
@@ -91,6 +135,7 @@ function ProjectCard({ project, index, visible }) {
         `,
         fontFamily: "'Outfit', sans-serif",
         height: "100%",
+        boxSizing: "border-box",
       }}
     >
       {/* corner gradient wash */}
@@ -108,14 +153,14 @@ function ProjectCard({ project, index, visible }) {
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "space-between",
-        marginBottom: 24,
+        marginBottom: 20,
         position: "relative",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           {/* icon box */}
           <div style={{
-            width: 46, height: 46,
-            borderRadius: 13,
+            width: 44, height: 44,
+            borderRadius: 12,
             background: project.glow,
             border: `1px solid ${project.border}`,
             display: "flex", alignItems: "center", justifyContent: "center",
@@ -129,8 +174,8 @@ function ProjectCard({ project, index, visible }) {
 
           {/* year badge */}
           <span style={{
-              fontFamily: "'Fira Code', monospace",
-            fontSize: 11,
+            fontFamily: "'Fira Code', monospace",
+            fontSize: 10.5,
             letterSpacing: "0.12em",
             padding: "3px 10px",
             borderRadius: 100,
@@ -143,7 +188,7 @@ function ProjectCard({ project, index, visible }) {
         </div>
 
         {/* links */}
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
           {[
             {
               href: project.repo,
@@ -174,14 +219,15 @@ function ProjectCard({ project, index, visible }) {
       {/* title */}
       <h3 style={{
         fontFamily: "'Outfit', sans-serif",
-        fontSize: "clamp(1.05rem, 1.5vw, 1.25rem)",
+        fontSize: "clamp(1rem, 3.5vw, 1.2rem)",
         fontWeight: 700,
         letterSpacing: "-0.02em",
         lineHeight: 1.2,
         color: hovered ? "#f0f4ff" : "rgba(240,244,255,0.88)",
-        marginBottom: 12,
+        marginBottom: 10,
         position: "relative",
         transition: "color .2s",
+        margin: "0 0 10px 0",
       }}>
         {project.title}
       </h3>
@@ -189,12 +235,13 @@ function ProjectCard({ project, index, visible }) {
       {/* desc */}
       <p style={{
         fontFamily: "'Outfit', sans-serif",
-        fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
-        lineHeight: 1.75,
+        fontSize: "clamp(0.82rem, 2.5vw, 0.93rem)",
+        lineHeight: 1.7,
         color: "rgba(240,244,255,0.4)",
-        marginBottom: 24,
+        marginBottom: 20,
         position: "relative",
         flexGrow: 1,
+        margin: "0 0 20px 0",
       }}>
         {project.desc}
       </p>
@@ -204,9 +251,9 @@ function ProjectCard({ project, index, visible }) {
         {project.tags.map(tag => (
           <span key={tag} style={{
             fontFamily: "'Fira Code', monospace",
-            fontSize: 10.5,
+            fontSize: 10,
             letterSpacing: "0.08em",
-            padding: "3px 11px",
+            padding: "3px 10px",
             borderRadius: 100,
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.07)",
@@ -220,41 +267,16 @@ function ProjectCard({ project, index, visible }) {
   );
 }
 
-function LinkBtn({ href, title, children }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <a
-      href={href}
-      title={title}
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        width: 32, height: 32,
-        borderRadius: 9,
-        border: `1px solid ${hov ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.08)"}`,
-        background: hov ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        color: hov ? "#f0f4ff" : "rgba(240,244,255,0.35)",
-        textDecoration: "none",
-        transition: "all .2s ease",
-        flexShrink: 0,
-      }}
-    >
-      {children}
-    </a>
-  );
-}
-
+/* ─── Main Section ────────────────────────────────── */
 export default function Projects() {
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(false);
+  const { isMobile, isTablet } = useBreakpoint();
 
   useEffect(() => {
     const io = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.08 }
+      { threshold: 0.06 }
     );
     if (sectionRef.current) io.observe(sectionRef.current);
     return () => io.disconnect();
@@ -266,6 +288,16 @@ export default function Projects() {
     transition: `opacity .7s ${delay}s cubic-bezier(.16,1,.3,1), transform .7s ${delay}s cubic-bezier(.16,1,.3,1)`,
   });
 
+  /* grid: 1 col on mobile, 2 on tablet, 3 on desktop */
+  const gridCols = isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(3, 1fr)";
+
+  /* padding: tight on mobile, medium on tablet, generous on desktop */
+  const sectionPadding = isMobile
+    ? "80px 20px 60px"
+    : isTablet
+    ? "90px 40px 70px"
+    : "100px 80px";
+
   return (
     <section
       id="projects"
@@ -276,9 +308,10 @@ export default function Projects() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "100px 80px",
+        padding: sectionPadding,
         overflow: "hidden",
         fontFamily: "'Outfit', sans-serif",
+        boxSizing: "border-box",
       }}
     >
       {/* ambient glow */}
@@ -286,44 +319,54 @@ export default function Projects() {
         position: "absolute",
         top: "30%", left: "50%",
         transform: "translateX(-50%)",
-        width: 900, height: 500,
+        width: "min(900px, 120vw)",
+        height: 500,
         background: "radial-gradient(ellipse, rgba(99,210,255,0.04) 0%, transparent 70%)",
         filter: "blur(80px)",
         pointerEvents: "none",
       }} />
 
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 1300, width: "100%", margin: "0 auto" }}>
+      <div style={{
+        position: "relative",
+        zIndex: 1,
+        maxWidth: 1300,
+        width: "100%",
+        margin: "0 auto",
+      }}>
 
-        {/* ── Header row — spread left/right ── */}
+        {/* ── Header ── */}
         <div style={{
           display: "flex",
-          alignItems: "flex-end",
+          alignItems: isMobile ? "flex-start" : "flex-end",
           justifyContent: "space-between",
-          marginBottom: 72,
-          gap: 40,
-          flexWrap: "wrap",
+          flexDirection: isMobile ? "column" : "row",
+          marginBottom: isMobile ? 40 : 64,
+          gap: isMobile ? 24 : 40,
         }}>
+
+          {/* left: label + heading */}
           <div>
             <p style={{
               ...fade(0),
-                fontFamily: "'Fira Code', monospace",
-                fontSize: 11,
+              fontFamily: "'Fira Code', monospace",
+              fontSize: 10.5,
               letterSpacing: "0.28em",
               textTransform: "uppercase",
               color: "rgba(240,244,255,0.25)",
-              marginBottom: 14,
+              marginBottom: 12,
               display: "flex",
               alignItems: "center",
               gap: 10,
+              margin: "0 0 12px 0",
             }}>
-              <span style={{ display: "block", width: 28, height: 1, background: "rgba(255,255,255,0.15)" }} />
+              <span style={{ display: "block", width: 24, height: 1, background: "rgba(255,255,255,0.15)" }} />
               Selected Work
             </p>
 
             <h2 style={{
               ...fade(.08),
               fontFamily: "'Outfit', sans-serif",
-            fontSize: "clamp(3.2rem, 6vw, 5.5rem)",
+              fontSize: isMobile ? "clamp(2.6rem, 11vw, 3.6rem)" : "clamp(3.2rem, 6vw, 5.5rem)",
               fontWeight: 800,
               letterSpacing: "-0.04em",
               lineHeight: 1.0,
@@ -342,15 +385,21 @@ export default function Projects() {
             </h2>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 16 }}>
+          {/* right: tagline + github link */}
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: isMobile ? "flex-start" : "flex-end",
+            gap: 14,
+          }}>
             <p style={{
               ...fade(.12),
               fontFamily: "'Outfit', sans-serif",
-              fontSize: "clamp(0.9rem, 1.3vw, 1rem)",
+              fontSize: "clamp(0.87rem, 2.5vw, 1rem)",
               lineHeight: 1.7,
               color: "rgba(240,244,255,0.38)",
-              maxWidth: 360,
-              textAlign: "right",
+              maxWidth: 340,
+              textAlign: isMobile ? "left" : "right",
               margin: 0,
             }}>
               A few projects I'm proud of —<br />from AI tools to full-stack platforms.
@@ -366,7 +415,7 @@ export default function Projects() {
                 fontSize: 10,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                padding: "10px 22px",
+                padding: "10px 20px",
                 borderRadius: 100,
                 border: "1px solid rgba(255,255,255,0.1)",
                 background: "rgba(255,255,255,0.03)",
@@ -374,6 +423,7 @@ export default function Projects() {
                 textDecoration: "none",
                 display: "inline-block",
                 transition: "all .2s ease",
+                whiteSpace: "nowrap",
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)";
@@ -391,11 +441,11 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* ── Project cards ── */}
+        {/* ── Project cards grid ── */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 20,
+          gridTemplateColumns: gridCols,
+          gap: isMobile ? 14 : 18,
           alignItems: "stretch",
         }}>
           {PROJECTS.map((project, i) => (

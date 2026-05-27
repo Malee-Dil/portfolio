@@ -219,14 +219,14 @@ export default function Hero() {
             position: "relative",
             borderRadius: 12,
             padding: "40px 52px 34px",
-            background: "rgba(8,11,18,0.72)",
+            //background: "transparent",
             backdropFilter: "blur(12px)",
             /* Rainbow gradient border via backgroundImage trick */
             border: "2px solid transparent",
-            backgroundImage: `
-              linear-gradient(rgba(8,11,18,0.72), rgba(8,11,18,0.72)),
-              linear-gradient(135deg, #63d2ff 0%, #c882ff 35%, #ff82b0 60%, #ffdd63 80%, #84ffb0 100%)
-            `,
+            // backgroundImage: `
+            //   linear-gradient(rgba(8,11,18,0.72), rgba(8,11,18,0.72)),
+            //   linear-gradient(135deg, #63d2ff 0%, #c882ff 35%, #ff82b0 60%, #ffdd63 80%, #84ffb0 100%)
+            // `,
             backgroundOrigin: "border-box",
             backgroundClip: "padding-box, border-box",
           }}>
@@ -255,7 +255,7 @@ export default function Hero() {
               {["rgba(255,90,90,0.7)", "rgba(255,190,50,0.7)", "rgba(50,210,100,0.7)"].map((c, i) => (
                 <span key={i} style={{
                   width: 10, height: 10, borderRadius: "50%",
-                  background: c, display: "block",
+                  //background: c, display: "block",
                 }} />
               ))}
             </div>
