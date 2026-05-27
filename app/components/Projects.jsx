@@ -11,7 +11,7 @@ const PROJECTS = [
     border: "rgba(99,210,255,0.18)",
     gradient: "linear-gradient(135deg, rgba(99,210,255,0.07) 0%, transparent 65%)",
     demo: "#",
-    repo: "#",
+    repo: "https://github.com/Malee-Dil/focus-ai-system",
     year: "2024",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -29,7 +29,7 @@ const PROJECTS = [
     border: "rgba(200,130,255,0.18)",
     gradient: "linear-gradient(135deg, rgba(200,130,255,0.07) 0%, transparent 65%)",
     demo: "#",
-    repo: "#",
+    repo: "https://github.com/Malee-Dil/attendance-management-system",
     year: "2024",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -48,7 +48,7 @@ const PROJECTS = [
     border: "rgba(132,255,176,0.18)",
     gradient: "linear-gradient(135deg, rgba(132,255,176,0.07) 0%, transparent 65%)",
     demo: "#",
-    repo: "#",
+    repo: "https://github.com/NishanshaSachith/magmaapp-full-project",
     year: "2023",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -406,7 +406,7 @@ export default function Projects() {
             </p>
 
             <a
-              href="https://github.com/maleesha"
+              href="https://github.com/Malee-Dil"
               target="_blank"
               rel="noopener noreferrer"
               style={{
